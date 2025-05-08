@@ -1,11 +1,13 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db
+from app.md.models import Note
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(100), nullable=False, unique=True)
   email = db.Column(db.String(100), nullable=False, unique=True)
   _password = db.Column(db.String(256), nullable=False)
+  notes = db.relationship("Note", backref="user", cascade="all, delete-orphan")
   
   @property
   def password(self):
